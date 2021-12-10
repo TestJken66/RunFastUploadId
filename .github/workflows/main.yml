@@ -57,8 +57,8 @@ jobs:
           ./gradlew build
           echo "===================编译完成查看当前目录=============="
           cp -r `find zip -name "*high*"` ../a.apk
-          cp -r `find zip -name "*inpa*"` ../a.apk
-          cp -r `find zip -name "*none*"` ../a.apk
+          cp -r `find zip -name "*inpa*"` ../b.apk
+          cp -r `find zip -name "*none*"` ../c.apk
 
       - name: cat dirs
         shell: bash
