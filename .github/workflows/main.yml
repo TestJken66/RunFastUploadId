@@ -102,7 +102,7 @@ jobs:
 
             # me.hhhaiai.fastuploadid.highmainfest
             adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.hhhaiai.fastuploadid.highmainfest --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v
-            # me.hhhaiai.fastuploadid.inpa
-            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.hhhaiai.fastuploadid.inpa --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v
-            # me.hhhaiai.fastuploadid.none
-            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.hhhaiai.fastuploadid.none --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v
+            # # me.hhhaiai.fastuploadid.inpa
+            # adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.hhhaiai.fastuploadid.inpa --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v
+            # # me.hhhaiai.fastuploadid.none
+            # adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.hhhaiai.fastuploadid.none --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v
