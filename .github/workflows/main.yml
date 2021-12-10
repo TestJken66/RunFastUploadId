@@ -9,16 +9,98 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: macOS-11
+    strategy:
+      matrix:
+        api-level: [15, 16, 17, 18, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+        target: [default]
+        arch: [x86]
     steps:
       - uses: actions/checkout@v2
+      - name: set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          #cache: gradle
+      
+      - name: Gradle cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
 
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: AVD cache
+        uses: actions/cache@v2
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-cache
+ 
+      - name: checkout  and sync
+        shell: bash
+        continue-on-error: true
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          git clone https://oauth2:${{ secrets.GTOKEN }}@github.com/hhhaiai/FastUploadId.git
+          echo "==================下载完成，查看当前目录============="
+          ls
+          cd FastUploadId
+          echo "==================进入工程目录,查看当前目录============="
+          ls
+          echo "===================开始编译=============="
+          chmod -R 777 *
+          git config core.filemode false
+          ./gradlew build
+          echo "===================编译完成查看当前目录=============="
+          cp -r zip/ ../
+
+      - name: cat dirs
+        shell: bash
+        continue-on-error: true
+        run: |
+          echo "===================查看目录=============="
+          ls
+          echo "cat zip"
+          ls -R zip
+
+      - name: RUN app and monkey
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
+          profile: Nexus 6
+          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            adb install -r `find zip -name "*high*"`
+            sleep 2
+            adb install -r `find zip -name "*inpa*"`
+            sleep 2
+            adb install -r `find zip -name "*none*"`
+            sleep 2
+            adb shell pm list package || true
+            sleep 2
+            adb shell am start -n me.hhhaiai.fastuploadid.highmainfest/me.hhhaiai.fastuploadid.MainActivity
+            sleep 2
+            adb shell am start -n me.hhhaiai.fastuploadid.inpa/me.hhhaiai.fastuploadid.MainActivity
+            sleep 2
+            adb shell am start -n me.hhhaiai.fastuploadid.none/me.hhhaiai.fastuploadid.MainActivity
+            sleep 10
+            adb shell am force-stop me.hhhaiai.fastuploadid.highmainfest
+            adb shell am force-stop me.hhhaiai.fastuploadid.inpa
+            adb shell am force-stop me.hhhaiai.fastuploadid.none
+            sleep 2
+            adb shell am start -n me.hhhaiai.fastuploadid.highmainfest/me.hhhaiai.fastuploadid.MainActivity
+            sleep 2
+            adb shell am start -n me.hhhaiai.fastuploadid.inpa/me.hhhaiai.fastuploadid.MainActivity
+            sleep 2
+            adb shell am start -n me.hhhaiai.fastuploadid.none/me.hhhaiai.fastuploadid.MainActivity
+            sleep 10
+
+            
+
