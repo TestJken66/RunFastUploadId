@@ -77,6 +77,8 @@ jobs:
           avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
+            echo "===================查看目录=============="
+            ls
             adb install -r a.apk
             adb install -r b.apk
             adb install -r c.apk
