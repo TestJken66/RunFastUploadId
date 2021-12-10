@@ -56,7 +56,9 @@ jobs:
           git config core.filemode false
           ./gradlew build
           echo "===================编译完成查看当前目录=============="
-          cp -r zip/ ../
+          cp -r `find zip -name "*high*"` ../a.apk
+          cp -r `find zip -name "*inpa*"` ../a.apk
+          cp -r `find zip -name "*none*"` ../a.apk
 
       - name: cat dirs
         shell: bash
@@ -64,43 +66,42 @@ jobs:
         run: |
           echo "===================查看目录=============="
           ls
-          echo "cat zip"
-          ls -R zip
 
-      - name: RUN app and monkey
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
-          arch: ${{ matrix.arch }}
-          profile: Nexus 6
-          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: |
-            adb install -r `find zip -name "*high*"`
-            sleep 2
-            adb install -r `find zip -name "*inpa*"`
-            sleep 2
-            adb install -r `find zip -name "*none*"`
-            sleep 2
-            adb shell pm list package || true
-            sleep 2
-            adb shell am start -n me.hhhaiai.fastuploadid.highmainfest/me.hhhaiai.fastuploadid.MainActivity
-            sleep 2
-            adb shell am start -n me.hhhaiai.fastuploadid.inpa/me.hhhaiai.fastuploadid.MainActivity
-            sleep 2
-            adb shell am start -n me.hhhaiai.fastuploadid.none/me.hhhaiai.fastuploadid.MainActivity
-            sleep 10
-            adb shell am force-stop me.hhhaiai.fastuploadid.highmainfest
-            adb shell am force-stop me.hhhaiai.fastuploadid.inpa
-            adb shell am force-stop me.hhhaiai.fastuploadid.none
-            sleep 2
-            adb shell am start -n me.hhhaiai.fastuploadid.highmainfest/me.hhhaiai.fastuploadid.MainActivity
-            sleep 2
-            adb shell am start -n me.hhhaiai.fastuploadid.inpa/me.hhhaiai.fastuploadid.MainActivity
-            sleep 2
-            adb shell am start -n me.hhhaiai.fastuploadid.none/me.hhhaiai.fastuploadid.MainActivity
-            sleep 10
 
-            
+      # - name: RUN app and monkey
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: ${{ matrix.api-level }}
+      #     target: ${{ matrix.target }}
+      #     arch: ${{ matrix.arch }}
+      #     profile: Nexus 6
+      #     avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
+      #     emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+      #     script: |
+      #       adb install -r `find zip -name "*high*"`
+      #       sleep 2
+      #       adb install -r `find zip -name "*inpa*"`
+      #       sleep 2
+      #       adb install -r `find zip -name "*none*"`
+      #       sleep 2
+      #       adb shell pm list package || true
+      #       sleep 2
+      #       adb shell am start -n me.hhhaiai.fastuploadid.highmainfest/me.hhhaiai.fastuploadid.MainActivity
+      #       sleep 2
+      #       adb shell am start -n me.hhhaiai.fastuploadid.inpa/me.hhhaiai.fastuploadid.MainActivity
+      #       sleep 2
+      #       adb shell am start -n me.hhhaiai.fastuploadid.none/me.hhhaiai.fastuploadid.MainActivity
+      #       sleep 10
+      #       adb shell am force-stop me.hhhaiai.fastuploadid.highmainfest
+      #       adb shell am force-stop me.hhhaiai.fastuploadid.inpa
+      #       adb shell am force-stop me.hhhaiai.fastuploadid.none
+      #       sleep 2
+      #       adb shell am start -n me.hhhaiai.fastuploadid.highmainfest/me.hhhaiai.fastuploadid.MainActivity
+      #       sleep 2
+      #       adb shell am start -n me.hhhaiai.fastuploadid.inpa/me.hhhaiai.fastuploadid.MainActivity
+      #       sleep 2
+      #       adb shell am start -n me.hhhaiai.fastuploadid.none/me.hhhaiai.fastuploadid.MainActivity
+      #       sleep 10
+
+
 
