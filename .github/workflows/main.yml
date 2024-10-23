@@ -57,9 +57,7 @@ jobs:
           git config core.filemode false
           ./gradlew build
           echo "===================编译完成查看当前目录=============="
-          cp -r `find zip -name "*high*"` ../a.apk
-          cp -r `find zip -name "*inpa*"` ../b.apk
-          cp -r `find zip -name "*none*"` ../c.apk
+          cp -r `find zip -name *.apk` ../a.apk
 
       - name: cat dirs
         shell: bash
@@ -80,9 +78,7 @@ jobs:
           script: |
             echo "===================查看目录=============="
             ls
-            adb install -r a.apk
-            adb install -r b.apk
-            adb install -r c.apk
+            adb install -r -t -g  a.apk
             adb shell pm list package || true
 
             wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
@@ -101,10 +97,5 @@ jobs:
             adb push libs/x86/ /data/local/tmp/ ||true
             adb push libs/x86_64/ /data/local/tmp/ ||true
 
-            # me.hhhaiai.fastuploadid.highmainfest
-            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.hhhaiai.fastuploadid.highmainfest --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
-            # me.hhhaiai.fastuploadid.inpa
-            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.hhhaiai.fastuploadid.inpa --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
-            # me.hhhaiai.fastuploadid.none
-            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.hhhaiai.fastuploadid.none --agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
+            adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.fup.v0--agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
 
