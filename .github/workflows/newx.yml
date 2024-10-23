@@ -82,17 +82,12 @@ jobs:
            script:  |
                 echo "===================查看目录=============="
                 ls
-                adb install -r -t -g  a.apk
+                adb install -r -t   a.apk
                 adb shell pm list package
-
-      - name: lunch app
-        shell: bash
-        continue-on-error: true
-        run: |
-          echo "================启动app============"
-          adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
-          echo "-----查看当前页面------"
-          adb shell dumpsys window | grep mCurrentFocus
-          sleep 10
-          echo "-----monkey指令-----"
-          adb shell  monkey -p me.fup.v0 -s 1234 500
+                echo "================启动app============"
+                adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
+                echo "-----查看当前页面------"
+                adb shell dumpsys window | grep mCurrentFocus
+                sleep 10
+                echo "-----monkey指令-----"
+                adb shell  monkey -p me.fup.v0 -s 1234 500
