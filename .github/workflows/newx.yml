@@ -84,10 +84,15 @@ jobs:
                 ls
                 adb install -r -t   a.apk
                 adb shell pm list package
-                echo "================启动app============"
+                echo "================启动app1============"
                 adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
                 echo "-----查看当前页面------"
                 adb shell dumpsys window | grep mCurrentFocus
-                sleep 10
-                echo "-----monkey指令-----"
-                adb shell  monkey -p me.fup.v0 -s 1234 5000
+                sleep 20
+                echo "================启动app2============"
+                adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
+                echo "-----查看当前页面------"
+                adb shell dumpsys window | grep mCurrentFocus
+                sleep 20
+                # echo "-----monkey指令-----"
+                # adb shell  monkey -p me.fup.v0 -s 1234 5000
