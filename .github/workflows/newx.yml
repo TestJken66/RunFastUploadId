@@ -51,7 +51,7 @@ jobs:
           git clone https://oauth2:${{ secrets.GTOKEN }}@github.com/hhhaiai/FastUploadId.git
           echo "==================下载完成，查看当前目录============="
           ls
-          cd FastUploadId
+          cd FastUploadId/Android
           echo "==================进入工程目录,查看当前目录============="
           ls
           echo "===================开始编译=============="
@@ -59,7 +59,7 @@ jobs:
           git config core.filemode false
           ./gradlew build
           echo "===================编译完成查看当前目录=============="
-          cp -r `find zip -name *.apk` ../a.apk
+          cp -r `find zip -name *.apk` ../../a.apk
 
       - name: cat dirs
         shell: bash
