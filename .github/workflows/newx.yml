@@ -90,4 +90,4 @@ jobs:
                 adb shell dumpsys window | grep mCurrentFocus
                 sleep 10
                 echo "-----monkey指令-----"
-                adb shell  monkey -p me.fup.v0 -s 1234 5000 -permission-target-system
+                adb shell  monkey -p me.fup.v0 -s 1234 5000
