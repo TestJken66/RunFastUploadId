@@ -68,16 +68,6 @@ jobs:
           echo "===================查看目录=============="
           ls
 
-    #   - name: create AVD and generate snapshot for caching
-    #     if: steps.avd-cache.outputs.cache-hit != 'true'
-    #     uses: reactivecircus/android-emulator-runner@v2
-    #     with:
-    #       api-level: ${{ matrix.api-level }}
-    #       force-avd-creation: false
-    #       emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-    #       disable-animations: false
-    #       script: echo "Generated AVD snapshot for caching."
-
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -93,22 +83,16 @@ jobs:
                 echo "===================查看目录=============="
                 ls
                 adb install -r -t -g  a.apk
-                adb shell pm list package || true
+                adb shell pm list package
 
-                wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/fastbot-thirdpart.jar
-                wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/monkeyq.jar
-                wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/framework.jar
-                adb push framework.jar /sdcard ||true
-                adb push monkeyq.jar /sdcard ||true
-                adb push fastbot-thirdpart.jar /sdcard ||true
-                wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/arm64-v8a/libfastbot_native.so -P libs/arm64-v8a/
-                wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/armeabi-v7a/libfastbot_native.so -P libs/armeabi-v7a/
-                wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/x86/libfastbot_native.so -P libs/x86/
-                wget https://raw.githubusercontent.com/TestJken66/Fastbot_Android/main/libs/x86_64/libfastbot_native.so -P libs/x86_64/
-                chmod -R 777 *
-                adb push libs/arm64-v8a/ /data/local/tmp/ ||true
-                adb push libs/armeabi-v7a/ /data/local/tmp/ ||true
-                adb push libs/x86/ /data/local/tmp/ ||true
-                adb push libs/x86_64/ /data/local/tmp/ ||true
-
-                adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p me.fup.v0--agent reuseq --bugreport --output-directory /sdcard/mbugs --running-minutes 3 --throttle 500 -v -v || true
+      - name: lunch app
+        shell: bash
+        continue-on-error: true
+        run: |
+          echo "================启动app============"
+          adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
+          echo "-----查看当前页面------"
+          adb shell dumpsys window | grep mCurrentFocus
+          sleep 10
+          echo "-----monkey指令-----"
+          adb shell  monkey -p me.fup.v0 -s 1234 500
