@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [ 29, 30, 31, 32, 33, 33-ext5, 34, 34-ext10, 34-ext11, 34-ext12, 34-ext8, 35, TiramisuPrivacySandbox, VanillaIceCream ]
+        api-level: [ 29, 30, 31, 32, 33,  34, 35 ]
         target: [google_apis_playstore]
         arch: [x86_64]
     steps:
