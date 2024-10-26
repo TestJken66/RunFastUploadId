@@ -89,7 +89,7 @@ jobs:
                 echo "================启动app1============"
                 timeout 1m adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
                 echo "-----查看当前页面------"
-                timeout 1madb shell dumpsys window | grep mCurrentFocus
+                timeout 1m adb shell dumpsys window | grep mCurrentFocus
                 sleep 30
                 timeout 1m  adb shell pm clear me.fup.v0
                 echo "================启动app2============"
@@ -97,5 +97,3 @@ jobs:
                 echo "-----查看当前页面------"
                 timeout 1m adb shell dumpsys window | grep mCurrentFocus
                 sleep 30
-                # echo "-----monkey指令-----"
-                # adb shell  monkey -p me.fup.v0 -s 1234 5000
