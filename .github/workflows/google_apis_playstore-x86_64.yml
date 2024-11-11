@@ -2,18 +2,19 @@ name: google_apis_playstore-x86_64
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   schedule:
-    - cron: '0 */6 * * *'  #   分 时 日 月 周
+    - cron: "0 */6 * * *" #   分 时 日 月 周
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [ 29, 30, 31, 32, 33,  34, 35,TiramisuPrivacySandbox,VanillaIceCream ]
+        api-level:
+          [29, 30, 31, 32, 33, 34, 35, TiramisuPrivacySandbox, VanillaIceCream]
         target: [google_apis_playstore]
         arch: [x86_64]
     steps:
@@ -27,14 +28,14 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: set up JDK 11
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          java-version: "11"
+          distribution: "adopt"
           #cache: gradle
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
-        
+
       - name: AVD cache
         uses: actions/cache@v4
         id: avd-cache
@@ -71,27 +72,27 @@ jobs:
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-           api-level: ${{ matrix.api-level }}
-           target: ${{ matrix.target }}
-           arch: ${{ matrix.arch }}
-           profile: Nexus 6
-           avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
-           force-avd-creation: false
-           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-           disable-animations: true
-           script:  |
-                echo "===================查看目录=============="
-                ls
-                timeout 3m adb install -r -t   a.apk
-                timeout 3m adb shell pm list package
-                echo "================启动app1============"
-                timeout 3m adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
-                echo "-----查看当前页面------"
-                timeout 3m adb shell dumpsys window | grep mCurrentFocus
-                sleep 30
-                timeout 3m  adb shell pm clear me.fup.v0
-                echo "================启动app2============"
-                timeout 3m adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
-                echo "-----查看当前页面------"
-                timeout 3m adb shell dumpsys window | grep mCurrentFocus
-                sleep 30
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
+          profile: Nexus 6
+          avd-name: ${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            echo "===================查看目录=============="
+            ls
+            timeout 3m adb install -r -t   a.apk
+            timeout 3m adb shell pm list package
+            echo "================启动app1============"
+            timeout 3m adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
+            echo "-----查看当前页面------"
+            timeout 3m adb shell dumpsys window | grep mCurrentFocus
+            sleep 30
+            timeout 3m  adb shell pm clear me.fup.v0
+            echo "================启动app2============"
+            timeout 3m adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
+            echo "-----查看当前页面------"
+            timeout 3m adb shell dumpsys window | grep mCurrentFocus
+            sleep 30
