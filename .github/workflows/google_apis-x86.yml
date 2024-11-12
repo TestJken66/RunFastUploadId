@@ -84,16 +84,17 @@ jobs:
           script: |
             echo "===================查看目录=============="
             ls
-            timeout 3m adb install -r -t   a.apk
-            timeout 3m adb shell pm list package
+            timeout 5m adb install -r -t   a.apk
+            timeout 5m adb shell pm list package
             echo "================启动app1============"
-            timeout 3m adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
+            timeout 5m adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
             echo "-----查看当前页面------"
-            timeout 3m adb shell dumpsys window | grep mCurrentFocus
+            timeout 5m adb shell dumpsys window | grep mCurrentFocus
             sleep 30
-            timeout 3m  adb shell pm clear me.fup.v0
+            timeout 5m  adb shell pm clear me.fup.v0
             echo "================启动app2============"
-            timeout 3m adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
+            timeout 5m adb shell am start -W -S -n me.fup.v0/me.hhhaiai.fastuploadid.ui.MainActivity
             echo "-----查看当前页面------"
-            timeout 3m adb shell dumpsys window | grep mCurrentFocus
+            timeout 5m adb shell dumpsys window | grep mCurrentFocus
             sleep 30
+            timeout 5m adb shell monkey -p me.fup.v0  10000
